@@ -1,0 +1,45 @@
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.form-title {
+  text-align: center;
+}
+
+.form-container {
+  width: 50vw;
+  background-color: #303030;
+  border-radius: 0.25rem;
+  border: 1px solid #646464;
+  padding: 1.5rem;
+}
+
+.form-container .input {
+  width: 100%;
+  margin-bottom: 1.25rem;
+  white-space: nowrap;
+}
+
+.form-container .input p {
+  margin-bottom: 0;
+}
+
+.form-container .input .input-field {
+  width: 98%;
+  height: 1.15rem;
+  border-radius: 0.25rem;
+  border: 1px solid #646464;
+  padding: 0.25rem;
+  transition: 0.2s ease;
+}
+
+.form-container .input .input-field:focus {
+  border-color: #535bf2;
+}
+
+.submit-container {
+  text-align: center;
+}
