@@ -34,6 +34,7 @@ body {
   border: 1px solid #646464;
   padding: 0.25rem;
   transition: 0.2s ease;
+  outline: none;
 }
 
 .form-container .input .input-field:focus {
@@ -42,4 +43,8 @@ body {
 
 .submit-container {
   text-align: center;
+}
+
+nav {
+  display: inline;
 }
