@@ -1,17 +1,20 @@
-import './global.css'
-import { createRoot } from 'react-dom/client'
-import { BrowserRouter, Routes, Route } from 'react-router'
-import Login from './routes/Login'
-import SignUp from './routes/SignUp'
-import Profile from './routes/Profile'
+import "./global.css";
+import { createRoot } from "react-dom/client";
+import { BrowserRouter, Routes, Route } from "react-router";
+import Root from "./routes/Root";
+import Login from "./routes/Login";
+import SignUp from "./routes/SignUp";
+import Profile from "./routes/Profile";
+import Dashboard from "./routes/Dashboard";
 
-createRoot(document.getElementById('root')!).render(
+createRoot(document.getElementById("root")!).render(
   <BrowserRouter>
     <Routes>
-      {/* For now, just use the login page as the default page, since we have no way of authenticating w/o backend */}
-      <Route index path='/login' element={<Login />}></Route>
-      <Route path='/signup' element={<SignUp />}></Route>
-      <Route path='profile' element={<Profile />}></Route>
+      <Route index path="/" element={<Root />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<SignUp />} />
+      <Route path="/profile/:user" element={<Profile />} />
+      <Route path="/dashboard" element={<Dashboard />} />
     </Routes>
   </BrowserRouter>
 );

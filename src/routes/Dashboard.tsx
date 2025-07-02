@@ -1,9 +1,7 @@
-import './Dashboard.css'
+import "./Dashboard.css";
 
 function Dashboard() {
-    return (
-        <div>Dashboard</div>
-    )
+  return <div>Dashboard</div>;
 }
 
 export default Dashboard;

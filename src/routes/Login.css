@@ -17,17 +17,17 @@ body {
   padding: 1.5rem;
 }
 
-.form-container .input {
+.input-container {
   width: 100%;
   margin-bottom: 1.25rem;
   white-space: nowrap;
 }
 
-.form-container .input p {
+label {
   margin-bottom: 0;
 }
 
-.form-container .input .input-field {
+input {
   width: 98%;
   height: 1.15rem;
   border-radius: 0.25rem;
@@ -37,7 +37,7 @@ body {
   outline: none;
 }
 
-.form-container .input .input-field:focus {
+input:focus {
   border-color: #535bf2;
 }
 
@@ -47,4 +47,8 @@ body {
 
 nav {
   display: inline;
+}
+
+p {
+  text-wrap: wrap;
 }
