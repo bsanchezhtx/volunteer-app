@@ -6,6 +6,8 @@ import Login from "./routes/Login";
 import SignUp from "./routes/SignUp";
 import Profile from "./routes/Profile";
 import Dashboard from "./routes/Dashboard";
+import EventManagement from "./routes/EventManagement";
+import VolunteerMatching from "./routes/VolunteerMatching";
 
 createRoot(document.getElementById("root")!).render(
   <BrowserRouter>
@@ -13,8 +15,9 @@ createRoot(document.getElementById("root")!).render(
       <Route index path="/" element={<Root />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<SignUp />} />
-      <Route path="/profile/:user" element={<Profile />} />
+      <Route path="/profile/" element={<Profile />} />
       <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="/events" element={<EventManagement />} />
     </Routes>
   </BrowserRouter>
 );

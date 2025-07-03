@@ -1,4 +1,4 @@
-import { useForm, useFormState, type SubmitHandler } from "react-hook-form";
+import { useForm, type SubmitHandler } from "react-hook-form";
 import { NavLink, useNavigate } from "react-router";
 import "./Login.css";
 
@@ -14,14 +14,12 @@ function Login() {
     handleSubmit,
     formState: { errors },
     getValues,
-    formState,
   } = useForm<FormInput>();
   const onSubmit: SubmitHandler<FormInput> = (data) => {
-    navigate(`/dashboard/${getValues("email")}`);
+    navigate("/dashboard/");
   };
-
   return (
-    <>
+    <div className="login-container">
       <div className="form-title">
         <h2>Login</h2>
       </div>
@@ -79,7 +77,7 @@ function Login() {
           <button type="submit">Login</button>
         </div>
       </form>
-    </>
+    </div>
   );
 }
 

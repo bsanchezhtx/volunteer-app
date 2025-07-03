@@ -1,5 +1,5 @@
 import "./SignUp.css";
-import { useForm, useFormState, type SubmitHandler } from "react-hook-form";
+import { useForm, type SubmitHandler } from "react-hook-form";
 import { NavLink, useNavigate } from "react-router";
 
 interface FormInput {
@@ -14,14 +14,13 @@ function SignUp() {
     handleSubmit,
     formState: { errors },
     getValues,
-    formState,
   } = useForm<FormInput>({ mode: "onChange" });
   const onSubmit: SubmitHandler<FormInput> = (data) => {
-    navigate(`/profile/${getValues("email")}`);
+    navigate("/profile/");
   };
 
   return (
-    <>
+    <div className="signup-container">
       <div className="form-title">
         <h2>Sign Up</h2>
       </div>
@@ -80,7 +79,7 @@ function SignUp() {
           <button type="submit">Register</button>
         </div>
       </form>
-    </>
+    </div>
   );
 }
 
