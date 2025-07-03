@@ -24,8 +24,8 @@ Clone the repo and run `npm install` and `npm run dev`
 - [ ] Volunteer Matching Form (A form where administrators can view and match volunteers to events based on their profiles and event requirements):
   - Volunteer Name (Auto-fill from database)
   - Matched Event (Auto-fill from database based on volunteer's profile)
-  - Notification System
-    - Display notifications for new event assignments, updates, and reminders
-  - Volunteer History
-    - Tabular display of all volunteer participation history. All fields from Event Management are displayed, along with volunteer’s participation status.
+- [ ] Notification System
+  - Display notifications for new event assignments, updates, and reminders
+- [ ] Volunteer History
+  - Tabular display of all volunteer participation history. All fields from Event Management are displayed, along with volunteer’s participation status.
 - [ ] Validations in place for required fields, field types, and field lengths.

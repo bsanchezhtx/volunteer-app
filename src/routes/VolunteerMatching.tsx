@@ -1,5 +1,12 @@
+import NavBar from "../components/NavBar";
+import "./VolunteerMatching.css";
+
 function VolunteerMatching() {
-  return <></>;
+  return (
+    <>
+      <NavBar></NavBar>
+    </>
+  );
 }
 
 export default VolunteerMatching;
