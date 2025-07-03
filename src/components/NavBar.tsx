@@ -10,6 +10,9 @@ function NavBar() {
           <NavLink to="/events">Event Management</NavLink>
         </li>
         <li>
+          <NavLink to="/volunteers">Volunteer Matching</NavLink>
+        </li>
+        <li>
           <NavLink to="/profile">Profile</NavLink>
         </li>
         <li>

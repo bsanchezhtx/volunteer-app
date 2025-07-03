@@ -27,7 +27,7 @@ function Profile() {
     handleSubmit,
     formState: { errors },
     control,
-  } = useForm<ProfileInput>();
+  } = useForm<ProfileInput>({ mode: "onChange" });
   const onSubmit: SubmitHandler<ProfileInput> = (data) => {
     console.log(data);
   };
@@ -299,8 +299,8 @@ function Profile() {
                   placeholder=""
                   className="date-picker"
                 />
-                {errors.preferences && (
-                  <p role="alert">{errors.preferences.message}</p>
+                {errors.availability && (
+                  <p role="alert">{errors.availability.message}</p>
                 )}
               </div>
             </div>

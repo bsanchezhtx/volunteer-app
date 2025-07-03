@@ -18,6 +18,7 @@ createRoot(document.getElementById("root")!).render(
       <Route path="/profile/" element={<Profile />} />
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/events" element={<EventManagement />} />
+      <Route path="/volunteers" element={<VolunteerMatching />} />
     </Routes>
   </BrowserRouter>
 );
