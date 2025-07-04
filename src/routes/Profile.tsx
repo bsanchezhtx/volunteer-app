@@ -1,315 +1,71 @@
-import NavBar from "../components/NavBar";
-import "./Profile.css";
-import { Controller, useForm, type SubmitHandler } from "react-hook-form";
+import { useState } from "react";
+import { useForm, Controller } from "react-hook-form";
 import Select from "react-select";
+import DatePicker from "react-datepicker";
+import states from "../data/usStates";
+import skills from "../data/skills";
+import NavBar from "../components/NavBar";
 
-interface ProfileInput {
-  name: string;
-  address1: string;
-  address2: string;
+type Form = {
+  fullName: string;
+  addr1: string;
+  addr2?: string;
   city: string;
-  state: string;
+  state: { value: string; label: string } | null;
   zip: string;
   skills: { value: string; label: string }[];
-  preferences: string;
-  availability: string;
-}
+  preferences?: string;
+};
 
-const skillsOptions = [
-  { value: "leadership", label: "Leadership" },
-  { value: "communication", label: "Communication" },
-  { value: "teamwork", label: "Teamwork" },
-];
+export default function Profile() {
+  const { register, control, handleSubmit, formState: { errors } } =
+    useForm<Form>({ defaultValues: { state: null, skills: [] } });
+  const [availability, setAvailability] = useState<Date[]>([]);
 
-function Profile() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    control,
-  } = useForm<ProfileInput>({ mode: "onChange" });
-  const onSubmit: SubmitHandler<ProfileInput> = (data) => {
-    console.log(data);
-  };
   return (
-    <div className="profile-container">
+    <>
       <NavBar />
-      <div className="grid-container">
-        <h3>Profile</h3>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="parent">
-            <div className="div1">
-              <div className="input-container">
-                <div className="label-container">
-                  <label>Full Name</label>
-                </div>
-                <input
-                  {...register("name", {
-                    required: "This field is required",
-                    maxLength: {
-                      value: 50,
-                      message: "Maximum of 50 characters",
-                    },
-                  })}
-                  id=""
-                  type="text"
-                  placeholder=""
-                />
-                {errors.name && <p role="alert">{errors.name.message}</p>}
-              </div>
-            </div>
-            <div className="div2">
-              <div className="input-container">
-                <div className="label-container">
-                  <label>Address, line 1</label>
-                </div>
-                <input
-                  {...register("address1", {
-                    required: "This field is required",
-                    maxLength: {
-                      value: 100,
-                      message: "Maximum of 100 characters",
-                    },
-                  })}
-                  id=""
-                  type="text"
-                  placeholder=""
-                />
-                {errors.address1 && (
-                  <p role="alert">{errors.address1.message}</p>
-                )}
-              </div>
-            </div>
-            <div className="div3">
-              <div className="input-container">
-                <div className="label-container">
-                  <label>Address, line 2 (optional)</label>
-                </div>
-                <input
-                  {...register("address2", {
-                    maxLength: {
-                      value: 100,
-                      message: "Maximum of 100 characters",
-                    },
-                  })}
-                  id=""
-                  type="text"
-                  placeholder=""
-                />
-                {errors.address2 && (
-                  <p role="alert">{errors.address2.message}</p>
-                )}
-              </div>
-            </div>
-            <div className="div4">
-              <div className="input-container">
-                <div className="label-container">
-                  <label>City</label>
-                </div>
-                <input
-                  {...register("city", {
-                    required: "This field is required",
-                    maxLength: {
-                      value: 100,
-                      message: "Maximum of 100 characters",
-                    },
-                  })}
-                  id=""
-                  type="text"
-                  placeholder=""
-                />
-                {errors.city && <p role="alert">{errors.city.message}</p>}
-              </div>
-            </div>
-            <div className="div5">
-              <div className="input-container">
-                <div className="label-container">
-                  <label>State</label>
-                </div>
-                <select
-                  {...register("state", {
-                    required: "This field is required",
-                  })}
-                >
-                  <option disabled selected value="">
-                    Select a state
-                  </option>
-                  <option value="AL">Alabama</option>
-                  <option value="AK">Alaska</option>
-                  <option value="AZ">Arizona</option>
-                  <option value="AR">Arkansas</option>
-                  <option value="CA">California</option>
-                  <option value="CO">Colorado</option>
-                  <option value="CT">Connecticut</option>
-                  <option value="DE">Delaware</option>
-                  <option value="DC">District Of Columbia</option>
-                  <option value="FL">Florida</option>
-                  <option value="GA">Georgia</option>
-                  <option value="HI">Hawaii</option>
-                  <option value="ID">Idaho</option>
-                  <option value="IL">Illinois</option>
-                  <option value="IN">Indiana</option>
-                  <option value="IA">Iowa</option>
-                  <option value="KS">Kansas</option>
-                  <option value="KY">Kentucky</option>
-                  <option value="LA">Louisiana</option>
-                  <option value="ME">Maine</option>
-                  <option value="MD">Maryland</option>
-                  <option value="MA">Massachusetts</option>
-                  <option value="MI">Michigan</option>
-                  <option value="MN">Minnesota</option>
-                  <option value="MS">Mississippi</option>
-                  <option value="MO">Missouri</option>
-                  <option value="MT">Montana</option>
-                  <option value="NE">Nebraska</option>
-                  <option value="NV">Nevada</option>
-                  <option value="NH">New Hampshire</option>
-                  <option value="NJ">New Jersey</option>
-                  <option value="NM">New Mexico</option>
-                  <option value="NY">New York</option>
-                  <option value="NC">North Carolina</option>
-                  <option value="ND">North Dakota</option>
-                  <option value="OH">Ohio</option>
-                  <option value="OK">Oklahoma</option>
-                  <option value="OR">Oregon</option>
-                  <option value="PA">Pennsylvania</option>
-                  <option value="RI">Rhode Island</option>
-                  <option value="SC">South Carolina</option>
-                  <option value="SD">South Dakota</option>
-                  <option value="TN">Tennessee</option>
-                  <option value="TX">Texas</option>
-                  <option value="UT">Utah</option>
-                  <option value="VT">Vermont</option>
-                  <option value="VA">Virginia</option>
-                  <option value="WA">Washington</option>
-                  <option value="WV">West Virginia</option>
-                  <option value="WI">Wisconsin</option>
-                  <option value="WY">Wyoming</option>
-                </select>
-                {errors.state && <p role="alert">{errors.state.message}</p>}
-              </div>
-            </div>
-            <div className="div6">
-              <div className="input-container">
-                <div className="label-container">
-                  <label>Zip Code</label>
-                </div>
-                <input
-                  {...register("zip", {
-                    required: "This field is required",
-                    minLength: {
-                      value: 5,
-                      message: "Minimum of 5 characters",
-                    },
-                    maxLength: {
-                      value: 9,
-                      message: "Maximum of 9 characters",
-                    },
-                  })}
-                  id=""
-                  type="text"
-                  placeholder=""
-                />
-                {errors.zip && <p role="alert">{errors.zip.message}</p>}
-              </div>
-            </div>
-            <div className="div7">
-              <div className="input-container">
-                <div className="label-container">
-                  <label>Skills</label>
-                </div>
-                <Controller
-                  control={control}
-                  rules={{ required: "This field is required" }}
-                  name="skills"
-                  render={({ field: { onChange } }) => (
-                    <Select
-                      options={skillsOptions}
-                      isMulti
-                      onChange={onChange}
-                      styles={{
-                        control: (baseStyles, state) => ({
-                          ...baseStyles,
-                          borderColor: state.isFocused ? "#535bf2" : "#646464",
-                          borderRadius: "0.25rem",
-                          borderWidth: "1px",
-                          backgroundColor: "#242424",
-                        }),
-                        multiValue: (baseStyles, state) => ({
-                          ...baseStyles,
-                          backgroundColor: "#303030",
-                        }),
-                        multiValueLabel: (baseStyles, state) => ({
-                          ...baseStyles,
-                          color: "white",
-                        }),
-                        menu: (baseStyles, state) => ({
-                          ...baseStyles,
-                          backgroundColor: "#242424",
-                          borderWidth: "1px",
-                          borderColor: "#535bf2",
-                        }),
-                        option: (baseStyles, state) => ({
-                          ...baseStyles,
-                          color: state.isFocused ? "#535bf2" : "",
-                          backgroundColor: state.isFocused ? "#303030" : "",
-                          borderWidth: "1px",
-                          borderColor: "#535bf2",
-                        }),
-                      }}
-                    />
-                  )}
-                />
+      <form onSubmit={handleSubmit(() => alert("Saved ✓"))} style={{ maxWidth: 480, margin: "1rem auto" }}>
+        <h2>Profile</h2>
+        <input placeholder="Full Name" {...register("fullName", { required: true, maxLength: 50 })}/>
+        {errors.fullName && <small>Required</small>}
 
-                {errors.skills && <p role="alert">{errors.skills.message}</p>}
-              </div>
-            </div>
-            <div className="div8">
-              <div className="input-container">
-                <div className="label-container">
-                  <label>Preferences</label>
-                </div>
-                <input
-                  {...register("preferences", {
-                    maxLength: {
-                      value: 1000,
-                      message: "Maximum of 1000 characters",
-                    },
-                  })}
-                  id=""
-                  type="text"
-                  placeholder=""
-                />
-                {errors.preferences && (
-                  <p role="alert">{errors.preferences.message}</p>
-                )}
-              </div>
-            </div>
-            <div className="div9">
-              <div className="input-container">
-                <div className="label-container">
-                  <label>Availability</label>
-                </div>
-                <input
-                  {...register("availability", {
-                    required: "This field is required",
-                  })}
-                  id=""
-                  type="date"
-                  placeholder=""
-                  className="date-picker"
-                />
-                {errors.availability && (
-                  <p role="alert">{errors.availability.message}</p>
-                )}
-              </div>
-            </div>
-          </div>
-          <button type="submit">Update</button>
-        </form>
-      </div>
-    </div>
+        <input placeholder="Address 1" {...register("addr1", { required: true, maxLength: 100 })}/>
+        {errors.addr1 && <small>Required</small>}
+
+        <input placeholder="Address 2" {...register("addr2", { maxLength: 100 })}/>
+        <input placeholder="City" {...register("city", { required: true, maxLength: 100 })}/>
+        {errors.city && <small>Required</small>}
+
+        <Controller
+          control={control}
+          name="state"
+          rules={{ required: true }}
+          render={({ field }) => <Select {...field} options={states} placeholder="State" />}
+        />
+        {errors.state && <small>Required</small>}
+
+        <input placeholder="Zip" {...register("zip", {
+          required: true,
+          pattern: /^\d{5}(\d{4})?$/
+        })}/>
+        {errors.zip && <small>5–9 digits</small>}
+
+        <Controller
+          control={control}
+          name="skills"
+          rules={{ required: true }}
+          render={({ field }) => <Select {...field} isMulti options={skills} placeholder="Skills" />}
+        />
+        {errors.skills && <small>Required</small>}
+
+        <textarea placeholder="Preferences" {...register("preferences")} rows={3}/>
+        <DatePicker selected={null} onChange={d => d && setAvailability(a => [...a, d])} placeholderText="Add availability date"/>
+        <ul>{availability.map((d,i)=><li key={i}>{d.toLocaleDateString()}</li>)}</ul>
+        {availability.length===0 && <small style={{color:"#d33"}}>Pick ≥ 1 date</small>}
+
+        <button type="submit" disabled={availability.length===0}>Save</button>
+      </form>
+    </>
   );
 }
-
-export default Profile;
