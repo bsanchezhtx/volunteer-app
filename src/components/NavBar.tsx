@@ -1,26 +1,19 @@
-import { NavLink } from "react-router";
-import "./NavBar.css";
+import { NavLink } from 'react-router-dom';
 
-function NavBar() {
+export default function NavBar() {
+  function logout() { localStorage.clear(); }
   return (
-    <nav className="nav">
-      <h2 className="site-title">Volunteer App</h2>
-      <ul>
-        <li>
-          <NavLink to="/events">Event Management</NavLink>
-        </li>
-        <li>
-          <NavLink to="/volunteers">Volunteer Matching</NavLink>
-        </li>
-        <li>
-          <NavLink to="/profile">Profile</NavLink>
-        </li>
-        <li>
-          <NavLink to="/login">Logout</NavLink>
-        </li>
+    <nav style={{ background:'#f6f6f6', padding:'0.5rem 1rem' }}>
+      <ul style={{ listStyle:'none', display:'flex', gap:'1rem', margin:0 }}>
+        <li><NavLink to="/dashboard">Dashboard</NavLink></li>
+        <li><NavLink to="/profile">Profile</NavLink></li>
+        <li><NavLink to="/admin/events">Event Mgmt</NavLink></li>
+        <li><NavLink to="/admin/matching">Matching</NavLink></li>
+        <li><NavLink to="/history">History</NavLink></li>
+        <li><NavLink to="/notifications">Notifications</NavLink></li>
+        <li><NavLink to="/login" onClick={logout}>Logout</NavLink></li>
       </ul>
     </nav>
   );
 }
 
-export default NavBar;
