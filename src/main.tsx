@@ -1,24 +1,41 @@
-import "./global.css";
-import { createRoot } from "react-dom/client";
-import { BrowserRouter, Routes, Route } from "react-router";
-import Root from "./routes/Root";
-import Login from "./routes/Login";
-import SignUp from "./routes/SignUp";
-import Profile from "./routes/Profile";
-import Dashboard from "./routes/Dashboard";
-import EventManagement from "./routes/EventManagement";
-import VolunteerMatching from "./routes/VolunteerMatching";
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { NotificationsProvider } from './context/NotificationsContext';
 
-createRoot(document.getElementById("root")!).render(
-  <BrowserRouter>
-    <Routes>
-      <Route index path="/" element={<Root />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/signup" element={<SignUp />} />
-      <Route path="/profile/" element={<Profile />} />
-      <Route path="/dashboard" element={<Dashboard />} />
-      <Route path="/events" element={<EventManagement />} />
-      <Route path="/volunteers" element={<VolunteerMatching />} />
-    </Routes>
-  </BrowserRouter>
+import Login from './pages/Login';
+import Register from './pages/Register';
+import ProfileWizard from './pages/ProfileWizard';
+import AdminEvents from './pages/AdminEvents';
+import Dashboard from './routes/Dashboard';
+import VolunteerMatching from './routes/VolunteerMatching';
+import NotificationsPage from './routes/NotificationsPage';
+import History from './routes/History';
+
+function Root() {
+  return <h1>Welcome to Volunteer App</h1>;
+}
+
+createRoot(document.getElementById('root')!).render(
+  <React.StrictMode>
+    <BrowserRouter>
+      <NotificationsProvider>
+        <Routes>
+          <Route path="/" element={<Root />} />
+
+          {/* public */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Register />} />
+
+          {/* protected (demo-guard always passes) */}
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/profile" element={<ProfileWizard />} />
+          <Route path="/admin/events" element={<AdminEvents />} />
+          <Route path="/admin/matching" element={<VolunteerMatching />} />
+          <Route path="/notifications" element={<NotificationsPage />} />
+          <Route path="/history" element={<History />} />
+        </Routes>
+      </NotificationsProvider>
+    </BrowserRouter>
+  </React.StrictMode>,
 );
