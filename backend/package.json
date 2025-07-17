@@ -3,17 +3,21 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "node src/index.js",
+    "dev": "node --watch src/index.js",
     "test": "jest --coverage"
   },
   "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.0",
     "express": "^4.19.0",
     "joi": "^17.12.1",
     "jsonwebtoken": "^9.0.2"
   },
   "devDependencies": {
     "jest": "^29.7.0",
-    "supertest": "^6.4.2"
+    "nodemon": "^3.1.10",
+    "supertest": "7.1.3"
   }
 }
-

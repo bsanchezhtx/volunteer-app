@@ -1,0 +1,9 @@
+[
+  {
+    "username": "a@yahoo.com",
+    "password": "$2b$10$nhlf9O/3KrPRngqMnIxPp.ibYMlvHO0RvSogQ9kKVoMUzlcneB/.y",
+    "role": "user",
+    "profile": [],
+    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFAeWFob28uY29tIiwiaWF0IjoxNzUyNzgzNjE1LCJleHAiOjE3NTI4NzAwMTV9.1N8XStXBo-1gk7JCjg6ieuBZMszWdIxDXfeR-jgDAiE"
+  }
+]
