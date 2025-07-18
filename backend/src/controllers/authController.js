@@ -3,12 +3,12 @@ import path from "path";
 import { promises } from "fs";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import usersJson from "../data/users.json" with { type: 'json' };
+import users from "../data/users.json" with { type: 'json' };
 
 const __dirname = import.meta.dirname;
 
 // json file to act as a mock database
-var db = usersJson
+var db = users
 
 const userLogin = async (req, res) => {
   const { user, pwd } = req.body;
@@ -28,7 +28,7 @@ const userLogin = async (req, res) => {
   if (match) {
     // creating a jwt
     const accessToken = jwt.sign(
-      { "username": foundUser.username },
+      { "username": foundUser.username, "role": foundUser.role },
       process.env.ACCESS_TOKEN_SECRET,
       { expiresIn: '1h' },
     );
@@ -46,13 +46,17 @@ const userLogin = async (req, res) => {
       path.join(__dirname, '..', 'data', 'users.json'),
       JSON.stringify(db)
     )
-    // make sure this token is stored in local memory on the front end
     res.cookie('jwt', refreshToken, { httpOnly: true, sameSite: 'None', secure: true, maxAge: 24 * 60 * 60 * 1000 });
+    // make sure this token is stored in local memory on the front end
     res.json({ accessToken });
   }
   else {
     res.sendStatus(401);
   }
 };
+
+export const getToken = () => {
+
+} 
 
 export default userLogin;

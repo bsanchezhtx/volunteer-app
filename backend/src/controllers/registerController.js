@@ -1,6 +1,7 @@
 import path from "path";
 import { promises } from "fs";
 import bcrypt from "bcrypt";
+import { validationResult } from "express-validator";
 import usersJson from "../data/users.json" with { type: 'json' };
 
 const __dirname = import.meta.dirname;
@@ -9,14 +10,16 @@ const __dirname = import.meta.dirname;
 var db = usersJson
 
 const registerUser = async (req, res) => {
-  const { user, pwd } = req.body;
 
+  const errors = validationResult(req);
   // make sure there is both a username and password sent
   // todo: better input validation for the username and password
-  if (!user || !pwd)
+  if (!errors.isEmpty())
     return res
-      .status(400)
-      .json({ message: "Username and password are required" });
+  .status(400)
+  .json({ message: "Username and password are required" });
+
+  const { user, pwd } = req.body;
 
   // check for duplicates
   const duplicate = db.find((account) => account.username === user);
