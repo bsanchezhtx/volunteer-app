@@ -1,15 +1,18 @@
-import request from "supertest";
-import app from "../index.js";
+import request from 'supertest';
+import app from '../index.js';
 
-describe("Auth routes", () => {
-  it("registers and logs in", async () => {
-    const email = "t@t.com", password = "abc";
-    const reg = await request(app).post("/api/auth/register").send({ email, password });
-    expect(reg.statusCode).toBe(200);
-    const token = reg.body.token;
-    expect(token).toBeTruthy();
+describe('Auth', () => {
+  const email = 'u1@test.com', pw = 'pass';
 
-    const login = await request(app).post("/api/auth/login").send({ email, password });
-    expect(login.body.token).toBeTruthy();
+  it('registers user', async () => {
+    const r = await request(app).post('/api/auth/register').send({ email, password: pw });
+    expect(r.statusCode).toBe(200);
+    expect(r.body.token).toBeTruthy();
+  });
+
+  it('logs in', async () => {
+    const r = await request(app).post('/api/auth/login').send({ email, password: pw });
+    expect(r.body.token).toBeTruthy();
   });
 });
+
