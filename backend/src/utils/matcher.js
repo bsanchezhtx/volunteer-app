@@ -4,7 +4,4 @@ export const score = (vol, evt) =>
   evt.urgency;
 
 export const bestEventFor = (vol, evts) =>
-  evts
-    .map(e => ({ e, s: score(vol, e) }))
-    .sort((a, b) => b.s - a.s)[0]?.e;
-
+  evts.map(e => ({ e, s: score(vol, e) })).sort((a, b) => b.s - a.s)[0]?.e;
