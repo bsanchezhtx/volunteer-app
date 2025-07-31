@@ -4,13 +4,17 @@
   "type": "module",
   "scripts": {
     "dev": "node src/index.js",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev --name init",
     "test": "jest --coverage"
   },
   "dependencies": {
+    "@prisma/client": "^5.0.0",
+    "bcrypt": "^5.1.0",
     "express": "^4.19.0",
     "express-validator": "^7.0.1",
-    "joi": "^17.12.1",
-    "jsonwebtoken": "^9.0.2"
+    "jsonwebtoken": "^9.0.2",
+    "prisma": "^5.0.0"
   },
   "devDependencies": {
     "jest": "^29.7.0",
