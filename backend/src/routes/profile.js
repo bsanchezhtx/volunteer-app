@@ -1,8 +1,8 @@
 import { Router } from "express";
 import { body } from "express-validator";
 import validate from "../middleware/validate.js";
-import { users } from "../data/seed.js";
 import { protect } from "../middleware/auth.js";
+import prisma from "../prisma.js";
 
 const r = Router();
 
@@ -17,15 +17,21 @@ const rules = [
   body("availability").isArray({ min: 1 })
 ];
 
-r.put("/", protect, rules, validate, (req, res) => {
-  const me = users.find(u => u.id === req.user.id);
-  me.profile = req.body;
+r.put("/", protect, rules, validate, async (req, res) => {
+  const data = { ...req.body, userId: req.user.id };
+  await prisma.profile.upsert({
+    where: { userId: req.user.id },
+    create: data,
+    update: data
+  });
   res.json({ msg: "Profile saved" });
 });
 
-r.get("/", protect, (req, res) => {
-  const me = users.find(u => u.id === req.user.id);
-  res.json(me.profile || {});
+r.get("/", protect, async (req, res) => {
+  const prof = await prisma.profile.findUnique({
+    where: { userId: req.user.id }
+  });
+  res.json(prof || {});
 });
 
 export default r;
