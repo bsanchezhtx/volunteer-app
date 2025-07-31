@@ -1,0 +1,67 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id             Int            @id @default(autoincrement())
+  email          String         @unique
+  password       String
+  role           String
+  profile        Profile?
+  notifications  Notification[]
+  history        History[]
+}
+
+model Profile {
+  id           Int      @id @default(autoincrement())
+  fullName     String   @db.VarChar(50)
+  addr1        String   @db.VarChar(100)
+  addr2        String?  @db.VarChar(100)
+  city         String   @db.VarChar(100)
+  state        String   @db.VarChar(2)
+  zip          String   @db.VarChar(9)
+  skills       String[]
+  preferences  String?
+  availability String[]
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId       Int      @unique
+}
+
+model Event {
+  id             Int       @id @default(autoincrement())
+  name           String    @db.VarChar(100)
+  description    String
+  location       String
+  requiredSkills String[]
+  urgency        Int
+  date           String
+  history        History[] @relation("Assignments")
+}
+
+model Notification {
+  id      Int     @id @default(autoincrement())
+  text    String
+  read    Boolean @default(false)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId  Int
+}
+
+model History {
+  id             Int      @id @default(autoincrement())
+  status         String
+  participatedAt DateTime @default(now())
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId         Int
+  event          Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  eventId        Int
+}
+
+model State {
+  code String @id @db.VarChar(2)
+  name String @db.VarChar(100)
+}
