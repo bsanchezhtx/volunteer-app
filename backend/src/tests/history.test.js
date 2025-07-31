@@ -1,13 +1,31 @@
 import request from "supertest";
 import app from "../index.js";
 import { sign } from "../middleware/auth.js";
-import { users } from "../data/seed.js";
+import prisma from "../prisma.js";
 
-const token = sign(users[0]);
+let token;
+let eventId;
 
-it("GET /history", async () => {
-  const r = await request(app).get("/api/history")
-    .set("Authorization", `Bearer ${token}`);
-  expect(Array.isArray(r.body)).toBe(true);
+beforeAll(async () => {
+  const user = await prisma.user.findFirst();
+  token = sign(user);
+  const evt = await prisma.event.findFirst();
+  eventId = evt.id;
+  await prisma.history.create({
+    data: {
+      userId: user.id,
+      eventId,
+      status: "Completed"
+    }
+  });
 });
+
+it("fetches history", async () => {
+  const res = await request(app)
+    .get("/api/history")
+    .set("Authorization", `Bearer ${token}`);
+  expect(res.statusCode).toBe(200);
+  expect(Array.isArray(res.body)).toBe(true);
+});
+
 
