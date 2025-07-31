@@ -6,3 +6,4 @@ export default (req, res, next) => {
     return res.status(400).json({ msg: "Validation error", details: errors.array() });
   next();
 };
+
