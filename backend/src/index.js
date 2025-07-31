@@ -21,4 +21,5 @@ app.use((_, res) => res.status(404).json({ msg: "Not found" }));
 const PORT = 4000;
 app.listen(PORT, () => console.log(`API listening on port ${PORT}`));
 
-export default app; 
+export default app;
+
