@@ -1,11 +1,15 @@
 import { Router } from "express";
 import { protect } from "../middleware/auth.js";
-import { notifications } from "../data/seed.js";
+import prisma from "../prisma.js";
 
 const r = Router();
 
-r.get("/", protect, (req, res) =>
-  res.json(notifications.filter(n => n.userId === req.user.id))
-);
+r.get("/", protect, async (req, res) => {
+  const list = await prisma.notification.findMany({
+    where: { userId: req.user.id }
+  });
+  res.json(list);
+});
 
 export default r;
+
