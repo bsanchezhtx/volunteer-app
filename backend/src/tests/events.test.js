@@ -1,27 +1,38 @@
 import request from "supertest";
 import app from "../index.js";
 import { sign } from "../middleware/auth.js";
-import { users } from "../data/seed.js";
+import prisma from "../prisma.js";
 
-const token = sign(users[0]);
+let token;
+
+beforeAll(async () => {
+  const user = await prisma.user.findFirst();
+  token = sign(user);
+});
 
 describe("Events", () => {
-  it("POST /events", async () => {
-    const r = await request(app).post("/api/events")
+  it("creates an event", async () => {
+    const res = await request(app)
+      .post("/api/events")
       .set("Authorization", `Bearer ${token}`)
       .send({
-        name: "Cleanup",
-        description: "Beach",
-        location: "Coast",
+        name: "Beach Cleanup",
+        description: "Remove trash",
+        location: "Coast Park",
         requiredSkills: ["teamwork"],
-        urgency: "Low",
+        urgency: 2,
         date: "2025-08-01"
       });
-    expect(r.body.id).toBeDefined();
+    expect(res.statusCode).toBe(200);
+    expect(res.body.id).toBeDefined();
   });
-  it("GET /events", async () => {
-    const r = await request(app).get("/api/events")
+
+  it("lists events", async () => {
+    const res = await request(app)
+      .get("/api/events")
       .set("Authorization", `Bearer ${token}`);
-    expect(Array.isArray(r.body)).toBe(true);
+    expect(Array.isArray(res.body)).toBe(true);
+    expect(res.body.length).toBeGreaterThan(0);
   });
 });
+
