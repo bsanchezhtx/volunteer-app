@@ -6,8 +6,8 @@
     "dev": "node src/index.js",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev --name init",
+    "postinstall": "prisma generate",
     "test": "jest --coverage"
-    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@prisma/client": "^5.0.0",
@@ -22,3 +22,4 @@
     "supertest": "^6.3.3"
   }
 }
+
