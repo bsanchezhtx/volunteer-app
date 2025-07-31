@@ -1,11 +1,16 @@
 import { Router } from "express";
 import { protect } from "../middleware/auth.js";
-import { history } from "../data/seed.js";
+import prisma from "../prisma.js";
 
 const r = Router();
 
-r.get("/", protect, (req, res) =>
-  res.json(history.filter(h => h.volunteerId === req.user.id))
-);
+r.get("/", protect, async (req, res) => {
+  const hist = await prisma.history.findMany({
+    where: { userId: req.user.id },
+    include: { event: true }
+  });
+  res.json(hist);
+});
 
 export default r;
+
