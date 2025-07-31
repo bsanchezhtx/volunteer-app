@@ -1,30 +1,41 @@
 import request from "supertest";
 import app from "../index.js";
 import { sign } from "../middleware/auth.js";
-import { users } from "../data/seed.js";
+import prisma from "../prisma.js";
 
-const token = sign(users[0]);
-const p = {
-  fullName: "Alice",
-  addr1: "123 Main",
+let token;
+
+beforeAll(async () => {
+  const user = await prisma.user.findFirst();
+  token = sign(user);
+});
+
+const payload = {
+  fullName: "Alice Smith",
+  addr1: "123 Main St",
   addr2: "",
   city: "Austin",
   state: "TX",
   zip: "78701",
   skills: ["teamwork"],
+  preferences: "",
   availability: ["2025-07-10"]
 };
 
 describe("Profile", () => {
-  it("PUT /profile", async () => {
-    const r = await request(app).put("/api/profile")
+  it("saves the profile", async () => {
+    const res = await request(app)
+      .put("/api/profile")
       .set("Authorization", `Bearer ${token}`)
-      .send(p);
-    expect(r.statusCode).toBe(200);
+      .send(payload);
+    expect(res.statusCode).toBe(200);
   });
-  it("GET /profile", async () => {
-    const r = await request(app).get("/api/profile")
+
+  it("fetches the profile", async () => {
+    const res = await request(app)
+      .get("/api/profile")
       .set("Authorization", `Bearer ${token}`);
-    expect(r.body.fullName).toBe(p.fullName);
+    expect(res.statusCode).toBe(200);
+    expect(res.body.fullName).toBe(payload.fullName);
   });
 });
