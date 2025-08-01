@@ -18,12 +18,26 @@ const rules = [
 ];
 
 r.put("/", protect, rules, validate, async (req, res) => {
-  const data = { ...req.body, userId: req.user.id };
+
+  const data = {
+    fullName: req.body.fullName,
+    addr1: req.body.addr1,
+    addr2: req.body.addr2 || null,
+    city: req.body.city,
+    state: req.body.state,
+    zip: req.body.zip,
+    skills: JSON.stringify(req.body.skills),
+    preferences: req.body.preferences || null,
+    availability: JSON.stringify(req.body.availability),
+    userId: req.user.id
+  };
+
   await prisma.profile.upsert({
     where: { userId: req.user.id },
     create: data,
     update: data
   });
+
   res.json({ msg: "Profile saved" });
 });
 
@@ -31,7 +45,26 @@ r.get("/", protect, async (req, res) => {
   const prof = await prisma.profile.findUnique({
     where: { userId: req.user.id }
   });
-  res.json(prof || {});
+
+  if (!prof) {
+    return res.json({});
+  }
+
+  res.json({
+    id: prof.id,
+    fullName: prof.fullName,
+    addr1: prof.addr1,
+    addr2: prof.addr2,
+    city: prof.city,
+    state: prof.state,
+    zip: prof.zip,
+    skills: JSON.parse(prof.skills),
+    preferences: prof.preferences,
+    availability: JSON.parse(prof.availability),
+    userId: prof.userId
+  });
 });
 
 export default r;
+
+
