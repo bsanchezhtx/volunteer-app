@@ -8,39 +8,39 @@ generator client {
 }
 
 model User {
-  id             Int            @id @default(autoincrement())
-  email          String         @unique
-  password       String
-  role           String
-  profile        Profile?
-  notifications  Notification[]
-  history        History[]
+  id            Int            @id @default(autoincrement())
+  email         String         @unique
+  password      String
+  role          String
+  profile       Profile?
+  notifications Notification[]
+  history       History[]
 }
 
 model Profile {
-  id           Int      @id @default(autoincrement())
-  fullName     String   @db.VarChar(50)
-  addr1        String   @db.VarChar(100)
-  addr2        String?  @db.VarChar(100)
-  city         String   @db.VarChar(100)
-  state        String   @db.VarChar(2)
-  zip          String   @db.VarChar(9)
-  skills       String[]
+  id           Int    @id @default(autoincrement())
+  fullName     String
+  addr1        String
+  addr2        String?
+  city         String
+  state        String
+  zip          String
+  skills       Json           // stores your array of skills
   preferences  String?
-  availability String[]
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId       Int      @unique
+  availability Json           // stores your array of dates
+  user         User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId       Int    @unique
 }
 
 model Event {
-  id             Int       @id @default(autoincrement())
-  name           String    @db.VarChar(100)
+  id             Int      @id @default(autoincrement())
+  name           String
   description    String
   location       String
-  requiredSkills String[]
+  requiredSkills Json     // stores your array of requiredSkills
   urgency        Int
   date           String
-  history        History[] @relation("Assignments")
+  history        History[] // back-relation from History.event
 }
 
 model Notification {
@@ -62,6 +62,7 @@ model History {
 }
 
 model State {
-  code String @id @db.VarChar(2)
-  name String @db.VarChar(100)
+  code String @id
+  name String
 }
+
