@@ -1,5 +1,5 @@
-import request from "supertest";
-import app from "../index.js";
+const request = require("supertest");
+const app = require("../index.js");
 
 describe("Auth", () => {
   const email = "test@user.com";
@@ -21,6 +21,7 @@ describe("Auth", () => {
     expect(res.body.token).toBeTruthy();
   });
 });
+
 
 
 
