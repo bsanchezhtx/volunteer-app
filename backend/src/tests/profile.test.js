@@ -1,12 +1,18 @@
 import request from "supertest";
-import app from "../index.js";
-import { sign } from "../middleware/auth.js";
+import app from "../app.js";
 import prisma from "../prisma.js";
+import { sign } from "../middleware/auth.js";
 
 let token;
+let user;
 
 beforeAll(async () => {
-  const user = await prisma.user.findFirst();
+  await prisma.profile.deleteMany();
+  await prisma.user.deleteMany();
+
+  user = await prisma.user.create({
+    data: { email: "suite_profile@user.com", password: "hash", role: "volunteer" }
+  });
   token = sign(user);
 });
 
@@ -17,9 +23,9 @@ const payload = {
   city: "Austin",
   state: "TX",
   zip: "78701",
-  skills: ["teamwork"],
+  skills: ["teamwork", "first-aid"],
   preferences: "",
-  availability: ["2025-07-10"]
+  availability: ["2025-08-10"]
 };
 
 describe("Profile", () => {
