@@ -3,16 +3,16 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-  "dev": "node src/index.js",
-  "prisma:generate": "prisma generate",
-  "prisma:migrate": "prisma migrate dev --name init",
-  "postinstall": "prisma generate",
-  "test": "node --experimental-vm-modules node_modules/.bin/jest --coverage"
-},
-
+    "dev": "node src/index.js",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev --name init",
+    "postinstall": "prisma generate",
+    "test": "node --experimental-vm-modules node_modules/.bin/jest --coverage"
+  },
   "dependencies": {
     "@prisma/client": "^5.0.0",
     "bcrypt": "^5.1.0",
+    "cors": "^2.8.5",
     "express": "^4.19.0",
     "express-validator": "^7.0.1",
     "jsonwebtoken": "^9.0.2",
