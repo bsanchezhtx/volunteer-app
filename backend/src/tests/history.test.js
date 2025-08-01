@@ -1,7 +1,7 @@
-import request from "supertest";
-import app from "../index.js";
-import { sign } from "../middleware/auth.js";
-import prisma from "../prisma.js";
+const request = require("supertest");
+const app = require("../index.js");
+const { sign } = require("../middleware/auth.js");
+const prisma = require("../prisma.js").default;
 
 let token;
 let eventId;
@@ -27,5 +27,3 @@ it("fetches history", async () => {
   expect(res.statusCode).toBe(200);
   expect(Array.isArray(res.body)).toBe(true);
 });
-
-
