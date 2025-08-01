@@ -15,14 +15,45 @@ const rules = [
   body("date").notEmpty()
 ];
 
-r.get("/", protect, async (_, res) => {
-  const all = await prisma.event.findMany();
-  res.json(all);
+r.post("/", protect, rules, validate, async (req, res) => {
+
+  const evt = await prisma.event.create({
+    data: {
+      name: req.body.name,
+      description: req.body.description,
+      location: req.body.location,
+      requiredSkills: JSON.stringify(req.body.requiredSkills),
+      urgency: req.body.urgency,
+      date: req.body.date
+    }
+  });
+
+  res.json({
+    id: evt.id,
+    name: evt.name,
+    description: evt.description,
+    location: evt.location,
+    requiredSkills: JSON.parse(evt.requiredSkills),
+    urgency: evt.urgency,
+    date: evt.date
+  });
 });
 
-r.post("/", protect, rules, validate, async (req, res) => {
-  const evt = await prisma.event.create({ data: req.body });
-  res.json(evt);
+r.get("/", protect, async (_, res) => {
+  const all = await prisma.event.findMany();
+
+  const parsed = all.map((e) => ({
+    id: e.id,
+    name: e.name,
+    description: e.description,
+    location: e.location,
+    requiredSkills: JSON.parse(e.requiredSkills),
+    urgency: e.urgency,
+    date: e.date
+  }));
+
+  res.json(parsed);
 });
 
 export default r;
+
