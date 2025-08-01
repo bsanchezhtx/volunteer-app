@@ -15,7 +15,16 @@ export default function App() {
     <AuthProvider>
       <NotificationsProvider>
         <Routes>
-          <Route path="/" element={<h1>Volunteer App</h1>} />
+          <Route
+            path="/"
+            element={
+              <>
+                <h1>Volunteer App</h1>
+                <a href="/login">Login</a>
+                <a href="/signup">Sign Up</a>
+              </>
+            }
+          />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Register />} />
           <Route path="/dashboard" element={<Dashboard />} />
