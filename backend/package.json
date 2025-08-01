@@ -3,12 +3,13 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "node src/index.js",
-    "prisma:generate": "prisma generate",
-    "prisma:migrate": "prisma migrate dev --name init",
-    "postinstall": "prisma generate",
-    "test": "jest --coverage"
-  },
+  "dev": "node src/index.js",
+  "prisma:generate": "prisma generate",
+  "prisma:migrate": "prisma migrate dev --name init",
+  "postinstall": "prisma generate",
+  "test": "node --experimental-vm-modules node_modules/.bin/jest --coverage"
+},
+
   "dependencies": {
     "@prisma/client": "^5.0.0",
     "bcrypt": "^5.1.0",
