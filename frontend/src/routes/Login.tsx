@@ -1,23 +1,25 @@
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import AuthContext from "../context/AuthProvider";
-import { useContext } from "react";
 import { useAuthContext } from "../context/AuthProvider";
+
+type LoginFormInput = {
+  email: string;
+  password: string;
+  admin: boolean;
+};
 
 export default function Login() {
   const nav = useNavigate();
-  const { register, handleSubmit } = useForm<{
-    email: string;
-    password: string;
-    admin: boolean;
-  }>();
+  const { loginUser } = useAuthContext();
+  const { register, handleSubmit } = useForm<LoginFormInput>();
 
-  // post to /api/login
-  const onSubmit = async () => {};
+  const handleLogin = async (form: LoginFormInput) => {
+    loginUser(form.email, form.password);
+  };
 
   return (
     <form
-      onSubmit={handleSubmit(() => nav("/dashboard"))}
+      onSubmit={handleSubmit(handleLogin)}
       style={{ maxWidth: 320, margin: "2rem auto" }}
     >
       <h2>Login</h2>

@@ -4,6 +4,7 @@ import { User } from "../types";
 import { useNavigate } from "react-router-dom";
 import api from "../api";
 import axios from "axios";
+import React from "react";
 
 type UserContextType = {
   user: User | null;
@@ -94,11 +95,4 @@ export const AuthProvider = ({ children }: AuthProps) => {
   );
 };
 
-export function useAuthContext() {
-  const context = useContext(AuthContext);
-  if (context === undefined) {
-    throw Error("Must be used within context");
-  }
-}
-
-export default AuthContext;
+export const useAuthContext = () => React.useContext(AuthContext);
