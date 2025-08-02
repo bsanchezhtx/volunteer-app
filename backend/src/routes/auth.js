@@ -19,7 +19,7 @@ r.post("/register", credRules, validate, async (req, res) => {
     const user = await prisma.user.create({
       data: { email, password: hash, role: "volunteer" },
     });
-    res.json({ token: sign(user) });
+    res.json({ token: sign(user), email: email, role: "volunteer" });
   } catch {
     res.status(409).json({ msg: "Email already in use" });
   }

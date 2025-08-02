@@ -1,31 +1,94 @@
-import {
-  createContext,
-  Dispatch,
-  ReactNode,
-  SetStateAction,
-  useContext,
-  useState,
-} from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
-type User = {
-  username: string;
-  password: string;
-  role: string;
-  accessToken: string;
+import { User } from "../types";
+import { useNavigate } from "react-router-dom";
+import api from "../api";
+import axios from "axios";
+
+type UserContextType = {
+  user: User | null;
+  token: string | null;
+  registerUser: (email: string, password: string) => void;
+  loginUser: (email: string, password: string) => void;
+  logout: () => void;
+  isLoggedIn: () => boolean;
 };
 
-type AuthProps = {
-  user: User | undefined;
-  setUser: Dispatch<SetStateAction<User | undefined>>;
-};
+type AuthProps = { children: React.ReactNode };
 
-const AuthContext = createContext<AuthProps | undefined>(undefined);
+const AuthContext = createContext<UserContextType>({} as UserContextType);
 
-export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<User | undefined>(undefined);
+export const AuthProvider = ({ children }: AuthProps) => {
+  const navigate = useNavigate();
+  const [token, setToken] = useState<string | null>(null);
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    const email = localStorage.getItem("email");
+    const token = localStorage.getItem("token");
+    if (email && token) {
+      setUser(JSON.parse(email));
+      setToken(token);
+      axios.defaults.headers.common["Authorization"] = "Bearer " + token;
+    }
+  }, []);
+
+  const registerUser = async (email: string, password: string) => {
+    await api({
+      method: "post",
+      url: "/register",
+      data: { email, password },
+    }).then((response) => {
+      if (response) {
+        const user = {
+          email: response?.data.email,
+          role: response?.data.role,
+        };
+        localStorage.setItem("token", response?.data.token);
+        setToken(response?.data.token!);
+        localStorage.setItem("email", user.email);
+        setUser(user);
+        navigate("/dashboard");
+      }
+    });
+  };
+
+  const loginUser = async (email: string, password: string) => {
+    await api({
+      method: "post",
+      url: "/login",
+      data: { email, password },
+    }).then((response) => {
+      if (response) {
+        const user = {
+          email: response?.data.email,
+          role: response?.data.role,
+        };
+        localStorage.setItem("token", response?.data.token);
+        setToken(response?.data.token!);
+        localStorage.setItem("email", user.email);
+        setUser(user);
+        navigate("/dashboard");
+      }
+    });
+  };
+
+  const logout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("email");
+    setUser(null);
+    setToken("");
+    navigate("/");
+  };
+
+  const isLoggedIn = () => {
+    return !!user;
+  };
 
   return (
-    <AuthContext.Provider value={{ user, setUser }}>
+    <AuthContext.Provider
+      value={{ user, token, loginUser, registerUser, isLoggedIn, logout }}
+    >
       {children}
     </AuthContext.Provider>
   );
