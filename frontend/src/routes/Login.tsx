@@ -1,5 +1,4 @@
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../context/AuthProvider";
 
 type LoginFormInput = {
@@ -9,7 +8,6 @@ type LoginFormInput = {
 };
 
 export default function Login() {
-  const nav = useNavigate();
   const { loginUser } = useAuthContext();
   const { register, handleSubmit } = useForm<LoginFormInput>();
 
