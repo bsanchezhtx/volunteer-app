@@ -30,7 +30,7 @@ r.post("/login", credRules, validate, async (req, res) => {
   const user = await prisma.user.findUnique({ where: { email } });
   if (!user || !(await bcrypt.compare(password, user.password)))
     return res.status(401).json({ msg: "Bad credentials" });
-  res.json({ token: sign(user) });
+  res.json({ email: email, role: user.role, token: sign(user) });
 });
 
 export default r;
