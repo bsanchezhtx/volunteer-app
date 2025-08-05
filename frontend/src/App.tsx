@@ -9,6 +9,7 @@ import AdminEvents from "./routes/EventManagement";
 import VolunteerMatching from "./routes/VolunteerMatching";
 import NotificationsPage from "./routes/NotificationsPage";
 import History from "./routes/History";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 export default function App() {
   return (
@@ -27,12 +28,54 @@ export default function App() {
           />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Register />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/admin/events" element={<AdminEvents />} />
-          <Route path="/admin/matching" element={<VolunteerMatching />} />
-          <Route path="/notifications" element={<NotificationsPage />} />
-          <Route path="/history" element={<History />} />
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute role="user">
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute role="user">
+                <Profile />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/events"
+            element={
+              <ProtectedRoute role="admin">
+                <AdminEvents />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/matching"
+            element={
+              <ProtectedRoute role="admin">
+                <VolunteerMatching />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/notifications"
+            element={
+              <ProtectedRoute role="user">
+                <NotificationsPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/history"
+            element={
+              <ProtectedRoute role="user">
+                <History />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </NotificationsProvider>
     </AuthProvider>
