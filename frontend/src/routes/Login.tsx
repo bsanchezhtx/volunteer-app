@@ -4,7 +4,6 @@ import { useAuthContext } from "../context/AuthProvider";
 type LoginFormInput = {
   email: string;
   password: string;
-  admin: boolean;
 };
 
 export default function Login() {
@@ -27,9 +26,6 @@ export default function Login() {
         placeholder="Password"
         {...register("password", { required: true })}
       />
-      <label>
-        <input type="checkbox" {...register("admin")} /> Login as admin
-      </label>
       <button type="submit">Sign in</button>
       <p style={{ textAlign: "center" }}>
         No account? <a href="/signup">Register</a>

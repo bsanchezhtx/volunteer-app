@@ -10,6 +10,7 @@ import VolunteerMatching from "./routes/VolunteerMatching";
 import NotificationsPage from "./routes/NotificationsPage";
 import History from "./routes/History";
 import ProtectedRoute from "./components/ProtectedRoute";
+import AdminRoute from "./components/AdminRoute";
 
 export default function App() {
   return (
@@ -31,7 +32,7 @@ export default function App() {
           <Route
             path="/dashboard"
             element={
-              <ProtectedRoute role="user">
+              <ProtectedRoute>
                 <Dashboard />
               </ProtectedRoute>
             }
@@ -39,7 +40,7 @@ export default function App() {
           <Route
             path="/profile"
             element={
-              <ProtectedRoute role="user">
+              <ProtectedRoute>
                 <Profile />
               </ProtectedRoute>
             }
@@ -47,23 +48,23 @@ export default function App() {
           <Route
             path="/admin/events"
             element={
-              <ProtectedRoute role="admin">
+              <AdminRoute>
                 <AdminEvents />
-              </ProtectedRoute>
+              </AdminRoute>
             }
           />
           <Route
             path="/admin/matching"
             element={
-              <ProtectedRoute role="admin">
+              <AdminRoute>
                 <VolunteerMatching />
-              </ProtectedRoute>
+              </AdminRoute>
             }
           />
           <Route
             path="/notifications"
             element={
-              <ProtectedRoute role="user">
+              <ProtectedRoute>
                 <NotificationsPage />
               </ProtectedRoute>
             }
@@ -71,7 +72,7 @@ export default function App() {
           <Route
             path="/history"
             element={
-              <ProtectedRoute role="user">
+              <ProtectedRoute>
                 <History />
               </ProtectedRoute>
             }

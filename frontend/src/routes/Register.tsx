@@ -4,6 +4,7 @@ import { useAuthContext } from "../context/AuthProvider";
 type RegisterFormInput = {
   email: string;
   password: string;
+  admin: boolean;
 };
 
 export default function Register() {
@@ -15,7 +16,12 @@ export default function Register() {
   } = useForm<RegisterFormInput>();
 
   const handleRegister = async (form: RegisterFormInput) => {
-    registerUser(form.email, form.password);
+    var role = "volunteer";
+    if (form.admin) {
+      role = "admin";
+    }
+    console.log(role);
+    registerUser(form.email, form.password, role);
   };
 
   return (
@@ -24,7 +30,6 @@ export default function Register() {
       style={{ maxWidth: 320, margin: "2rem auto" }}
     >
       <h2>Create Account</h2>
-
       <input
         placeholder="Email"
         {...register("email", {
@@ -33,15 +38,26 @@ export default function Register() {
         })}
       />
       {errors.email && <small>{errors.email.message}</small>}
-
       <input
         type="password"
         placeholder="Password"
         {...register("password", { required: true, minLength: 6 })}
       />
       {errors.password && <small>Min 6 chars</small>}
-
+      <div>
+        <input
+          style={{ display: "inline-block" }}
+          type="checkbox"
+          {...register("admin")}
+        />
+        <label style={{ display: "inline-block" }}>
+          (Testing) Register as admin{" "}
+        </label>
+      </div>
       <button type="submit">Register</button>
+      <p style={{ textAlign: "center" }}>
+        Already have an account? <a href="/login">Sign in</a>
+      </p>
     </form>
   );
 }

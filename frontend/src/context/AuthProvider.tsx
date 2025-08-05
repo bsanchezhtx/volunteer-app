@@ -9,7 +9,7 @@ import React from "react";
 type UserContextType = {
   user: User | null;
   token: string | null;
-  registerUser: (email: string, password: string) => void;
+  registerUser: (email: string, password: string, role: string) => void;
   loginUser: (email: string, password: string) => void;
   logout: () => void;
   isLoggedIn: () => boolean;
@@ -25,58 +25,74 @@ export const AuthProvider = ({ children }: AuthProps) => {
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    const email = localStorage.getItem("email");
+    const user = localStorage.getItem("user");
     const token = localStorage.getItem("token");
-    if (email && token) {
-      setUser(JSON.parse(email));
+    if (user && token) {
+      setUser(JSON.parse(user));
       setToken(token);
       axios.defaults.headers.common["Authorization"] = "Bearer " + token;
     }
   }, []);
 
-  const registerUser = async (email: string, password: string) => {
+  const registerUser = async (
+    email: string,
+    password: string,
+    role: string
+  ) => {
     await api({
       method: "post",
-      url: "/register",
-      data: { email, password },
-    }).then((response) => {
-      if (response) {
-        const user = {
-          email: response?.data.email,
-          role: response?.data.role,
-        };
-        localStorage.setItem("token", response?.data.token);
-        setToken(response?.data.token!);
-        localStorage.setItem("email", user.email);
-        setUser(user);
-        navigate("/dashboard");
-      }
-    });
+      url: "/auth/register",
+      data: { email, password, role },
+    })
+      .then((response) => {
+        if (response) {
+          const user = {
+            email: response?.data.email,
+            role: response?.data.role,
+          };
+          localStorage.setItem("user", JSON.stringify(user));
+          localStorage.setItem("token", response?.data.token);
+          setToken(response?.data.token!);
+          setUser(user);
+          navigate("/dashboard");
+        }
+      })
+      .catch((error) => {
+        if (error.response) {
+          console.log(error.response.data); // => the response payload
+        }
+      });
   };
 
   const loginUser = async (email: string, password: string) => {
     await api({
       method: "post",
-      url: "/login",
+      url: "/auth/login",
       data: { email, password },
-    }).then((response) => {
-      if (response) {
-        const user = {
-          email: response?.data.email,
-          role: response?.data.role,
-        };
-        localStorage.setItem("token", response?.data.token);
-        setToken(response?.data.token!);
-        localStorage.setItem("email", user.email);
-        setUser(user);
-        navigate("/dashboard");
-      }
-    });
+    })
+      .then((response) => {
+        if (response) {
+          const user = {
+            email: response?.data.email,
+            role: response?.data.role,
+          };
+          localStorage.setItem("user", JSON.stringify(user));
+          localStorage.setItem("token", response?.data.token);
+          setToken(response?.data.token!);
+          setUser(user);
+          navigate("/dashboard");
+        }
+      })
+      .catch((error) => {
+        if (error.response) {
+          console.log(error.response.data); // => the response payload
+        }
+      });
   };
 
   const logout = () => {
+    localStorage.removeItem("user");
     localStorage.removeItem("token");
-    localStorage.removeItem("email");
     setUser(null);
     setToken("");
     navigate("/");

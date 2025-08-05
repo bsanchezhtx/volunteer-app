@@ -8,10 +8,10 @@ const ProtectedRoute = ({ children }: Props) => {
   const location = useLocation();
   const { isLoggedIn, user } = useAuthContext();
 
-  return isLoggedIn() ? (
+  return isLoggedIn() && user?.role === "admin" ? (
     <>{children}</>
   ) : (
-    <Navigate to="/login" state={{ from: location }} replace></Navigate>
+    <Navigate to="/dashboard" state={{ from: location }} replace></Navigate>
   );
 };
 
