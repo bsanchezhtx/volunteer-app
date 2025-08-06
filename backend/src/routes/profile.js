@@ -28,11 +28,11 @@ r.put("/", protect, rules, validate, async (req, res) => {
     skills: JSON.stringify(req.body.skills),
     preferences: req.body.preferences || null,
     availability: JSON.stringify(req.body.availability),
-    userId: req.user.id,
+    userId: req.body.userId,
   };
 
   await prisma.profile.upsert({
-    where: { userId: req.user.id },
+    where: { userId: req.body.userId },
     create: data,
     update: data,
   });
@@ -40,9 +40,10 @@ r.put("/", protect, rules, validate, async (req, res) => {
   res.json({ msg: "Profile saved" });
 });
 
-r.get("/", protect, async (req, res) => {
+r.post("/", protect, async (req, res) => {
+  const { id } = req.body;
   const prof = await prisma.profile.findUnique({
-    where: { userId: req.user.id },
+    where: { userId: id },
   });
 
   if (!prof) {
@@ -50,7 +51,6 @@ r.get("/", protect, async (req, res) => {
   }
 
   res.json({
-    id: prof.id,
     fullName: prof.fullName,
     addr1: prof.addr1,
     addr2: prof.addr2,

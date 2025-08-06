@@ -20,11 +20,15 @@ export default function App() {
           <Route
             path="/"
             element={
-              <>
+              <div style={{ margin: "auto", textAlign: "center" }}>
                 <h1>Volunteer App</h1>
-                <a href="/login">Login</a>
-                <a href="/signup">Sign Up</a>
-              </>
+                <h2>
+                  <a href="/login">Login </a>
+                </h2>
+                <h2>
+                  <a href="/signup">Sign Up</a>
+                </h2>
+              </div>
             }
           />
           <Route path="/login" element={<Login />} />

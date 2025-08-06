@@ -12,6 +12,6 @@ export type Event = {
   urgency: number;
 };
 export type User = {
-  email: string;
+  id: number;
   role: string;
 };

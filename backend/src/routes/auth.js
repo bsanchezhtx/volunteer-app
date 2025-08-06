@@ -19,7 +19,11 @@ r.post("/register", credRules, validate, async (req, res) => {
     const user = await prisma.user.create({
       data: { email: email, password: hash, role },
     });
-    res.json({ token: sign(user), email: user.email, role: user.role });
+    res.json({
+      token: sign(user),
+      role: user.role,
+      id: user.id,
+    });
   } catch {
     res.status(409).json({ msg: "Email already in use" });
   }
@@ -30,7 +34,11 @@ r.post("/login", credRules, validate, async (req, res) => {
   const user = await prisma.user.findUnique({ where: { email } });
   if (!user || !(await bcrypt.compare(password, user.password)))
     return res.status(401).json({ msg: "Bad credentials" });
-  res.json({ email: user.email, role: user.role, token: sign(user) });
+  res.json({
+    role: user.role,
+    token: sign(user),
+    id: user.id,
+  });
 });
 
 export default r;

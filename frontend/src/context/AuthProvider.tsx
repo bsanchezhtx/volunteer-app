@@ -30,7 +30,6 @@ export const AuthProvider = ({ children }: AuthProps) => {
     if (user && token) {
       setUser(JSON.parse(user));
       setToken(token);
-      axios.defaults.headers.common["Authorization"] = "Bearer " + token;
     }
   }, []);
 
@@ -47,7 +46,7 @@ export const AuthProvider = ({ children }: AuthProps) => {
       .then((response) => {
         if (response) {
           const user = {
-            email: response?.data.email,
+            id: response?.data.id,
             role: response?.data.role,
           };
           localStorage.setItem("user", JSON.stringify(user));
@@ -59,7 +58,7 @@ export const AuthProvider = ({ children }: AuthProps) => {
       })
       .catch((error) => {
         if (error.response) {
-          console.log(error.response.data); // => the response payload
+          console.log(error.response.data);
         }
       });
   };
@@ -73,7 +72,7 @@ export const AuthProvider = ({ children }: AuthProps) => {
       .then((response) => {
         if (response) {
           const user = {
-            email: response?.data.email,
+            id: response?.data.id,
             role: response?.data.role,
           };
           localStorage.setItem("user", JSON.stringify(user));
@@ -85,7 +84,7 @@ export const AuthProvider = ({ children }: AuthProps) => {
       })
       .catch((error) => {
         if (error.response) {
-          console.log(error.response.data); // => the response payload
+          console.log(error.response.data);
         }
       });
   };
@@ -99,7 +98,9 @@ export const AuthProvider = ({ children }: AuthProps) => {
   };
 
   const isLoggedIn = () => {
-    return !!user;
+    const user = localStorage.getItem("user");
+    const token = localStorage.getItem("token");
+    return !!(user && token);
   };
 
   return (
