@@ -22,9 +22,12 @@ r.post(
     let best = null;
     let bestScore = -Infinity;
     for (const e of evts) {
-      const skillMatch = e.requiredSkills.filter((s) =>
-        prof.skills.includes(s)
+      const reqSkills = JSON.parse(e.requiredSkills);
+      const volunteerSkills = JSON.parse(prof.skills);
+      const skillMatch = reqSkills.filter((s) =>
+        volunteerSkills.includes(s)
       ).length;
+      const avail = JSON.parse(prof.availability);
       const dateMatch = prof.availability.includes(e.date) ? 1 : 0;
       const score = skillMatch + dateMatch + e.urgency;
       if (score > bestScore) {

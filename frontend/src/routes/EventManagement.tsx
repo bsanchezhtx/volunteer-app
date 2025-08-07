@@ -44,6 +44,7 @@ export default function EventManagement() {
       date: f.date?.toISOString().split("T")[0],
     });
     alert("Event saved ✓");
+    api.get("/events").then(({ data }) => setEvents(data));
   }
 
   return (
