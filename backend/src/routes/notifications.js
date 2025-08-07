@@ -4,12 +4,12 @@ import prisma from "../prisma.js";
 
 const r = Router();
 
-r.get("/", protect, async (req, res) => {
+r.post("/", protect, async (req, res) => {
   const list = await prisma.notification.findMany({
-    where: { userId: req.user.id }
+    where: { userId: req.body.id },
+    select: { id: true, text: true, read: true },
   });
   res.json(list);
 });
 
 export default r;
-

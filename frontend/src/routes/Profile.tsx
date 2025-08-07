@@ -55,7 +55,7 @@ export default function Profile() {
         url: "/profile",
         data: { id },
       }).then((response) => {
-        if (response) {
+        if (response.data) {
           setProfile(response.data);
           let dates = response.data.availability + "";
           const ava = dates
