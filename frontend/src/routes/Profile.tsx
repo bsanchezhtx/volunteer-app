@@ -41,6 +41,7 @@ export default function Profile() {
     register,
     control,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<ProfileForm>({ defaultValues: { state: null, skills: [] } });
   const [availability, setAvailability] = useState<Date[]>([]);
@@ -49,15 +50,24 @@ export default function Profile() {
 
   const fetch = async () => {
     try {
-      await api({
+      await api<ProfileContext>({
         method: "post",
         url: "/profile",
         data: { id },
       }).then((response) => {
         setProfile(response.data);
-        setAvailability(
-          response.data.availability.map((dateStr: string) => new Date(dateStr))
+        console.log(response.data.skills);
+        let dates = response.data.availability + "";
+        const ava = dates
+          .replace(/[\])}[{(]/g, "")
+          .split(",")
+          .map((dateStr: string) => new Date(dateStr));
+        setValue(
+          "state",
+          states.find((state) => state.value == response.data.state)
         );
+        setValue("skills", response.data.skills);
+        setAvailability(ava);
         setLoading(false);
       });
     } catch (error) {
@@ -91,6 +101,7 @@ export default function Profile() {
     } catch (error) {
       console.error(error);
     }
+    alert("Saved");
   };
 
   if (!loading) {
@@ -104,21 +115,21 @@ export default function Profile() {
           <h2>Profile</h2>
           <input
             placeholder="Full Name"
-            value={profile?.fullName}
+            value={profile?.fullName || ""}
             {...register("fullName", { required: true, maxLength: 50 })}
           />
           {errors.fullName && <small>Required</small>}
 
           <input
             placeholder="Address 1"
-            value={profile?.addr1}
+            value={profile?.addr1 || ""}
             {...register("addr1", { required: true, maxLength: 100 })}
           />
           {errors.addr1 && <small>Required</small>}
 
           <input
             placeholder="Address 2"
-            value={profile?.addr2}
+            value={profile?.addr2 || ""}
             {...register("addr2", { maxLength: 100 })}
           />
           <input
@@ -133,21 +144,14 @@ export default function Profile() {
             name="state"
             rules={{ required: true }}
             render={({ field }) => (
-              <Select
-                {...field}
-                options={states}
-                defaultValue={states.find(
-                  (state) => state.value == profile?.state
-                )}
-                placeholder="State"
-              />
+              <Select {...field} options={states} placeholder="State" />
             )}
           />
           {errors.state && <small>Required</small>}
 
           <input
             placeholder="Zip"
-            value={profile?.zip}
+            value={profile?.zip || ""}
             {...register("zip", {
               required: true,
               pattern: /^\d{5}(\d{4})?$/,
