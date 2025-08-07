@@ -55,20 +55,21 @@ export default function Profile() {
         url: "/profile",
         data: { id },
       }).then((response) => {
-        setProfile(response.data);
-        console.log(response.data.skills);
-        let dates = response.data.availability + "";
-        const ava = dates
-          .replace(/[\])}[{(]/g, "")
-          .split(",")
-          .map((dateStr: string) => new Date(dateStr));
-        setValue(
-          "state",
-          states.find((state) => state.value == response.data.state)
-        );
-        setValue("skills", response.data.skills);
-        setAvailability(ava);
-        setLoading(false);
+        if (response) {
+          setProfile(response.data);
+          let dates = response.data.availability + "";
+          const ava = dates
+            .replace(/[\])}[{(]/g, "")
+            .split(",")
+            .map((dateStr: string) => new Date(dateStr));
+          setValue(
+            "state",
+            states.find((state) => state.value == response.data.state)
+          );
+          setValue("skills", response.data.skills);
+          setAvailability(ava);
+          setLoading(false);
+        }
       });
     } catch (error) {
       console.error(error);
@@ -78,6 +79,7 @@ export default function Profile() {
 
   useEffect(() => {
     fetch();
+    setAvailability([]);
   }, []);
 
   const updateProfile = async (form: ProfileForm) => {
@@ -115,26 +117,26 @@ export default function Profile() {
           <h2>Profile</h2>
           <input
             placeholder="Full Name"
-            value={profile?.fullName || ""}
+            defaultValue={profile?.fullName}
             {...register("fullName", { required: true, maxLength: 50 })}
           />
           {errors.fullName && <small>Required</small>}
 
           <input
             placeholder="Address 1"
-            value={profile?.addr1 || ""}
+            defaultValue={profile?.addr1}
             {...register("addr1", { required: true, maxLength: 100 })}
           />
           {errors.addr1 && <small>Required</small>}
 
           <input
             placeholder="Address 2"
-            value={profile?.addr2 || ""}
+            defaultValue={profile?.addr2}
             {...register("addr2", { maxLength: 100 })}
           />
           <input
             placeholder="City"
-            value={profile?.city}
+            defaultValue={profile?.city}
             {...register("city", { required: true, maxLength: 100 })}
           />
           {errors.city && <small>Required</small>}
@@ -151,7 +153,7 @@ export default function Profile() {
 
           <input
             placeholder="Zip"
-            value={profile?.zip || ""}
+            defaultValue={profile?.zip}
             {...register("zip", {
               required: true,
               pattern: /^\d{5}(\d{4})?$/,
@@ -176,7 +178,7 @@ export default function Profile() {
 
           <textarea
             placeholder="Preferences"
-            value={profile?.preferences}
+            defaultValue={profile?.preferences}
             {...register("preferences")}
             rows={3}
           />

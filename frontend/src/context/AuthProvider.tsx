@@ -30,6 +30,7 @@ export const AuthProvider = ({ children }: AuthProps) => {
     if (user && token) {
       setUser(JSON.parse(user));
       setToken(token);
+      navigate("/dashboard");
     }
   }, []);
 

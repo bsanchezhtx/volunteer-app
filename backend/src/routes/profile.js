@@ -31,10 +31,19 @@ r.put("/", protect, rules, validate, async (req, res) => {
     userId: req.body.userId,
   };
 
-  await prisma.profile.upsert({
+  const newProfile = await prisma.profile.upsert({
     where: { userId: req.body.userId },
     create: data,
     update: data,
+  });
+
+  await prisma.user.update({
+    where: {
+      id: data.userId,
+    },
+    data: {
+      profile: { connect: { id: newProfile.id } },
+    },
   });
 
   res.json({ msg: "Profile saved" });
