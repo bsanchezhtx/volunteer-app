@@ -7,10 +7,7 @@ import Register from "./routes/Register";
 import Profile from "./routes/Profile";
 import Dashboard from "./routes/Dashboard";
 import AdminEvents from "./routes/EventManagement";
-import UserEvents from "./routes/EventView";
 import VolunteerMatching from "./routes/VolunteerMatching";
-import NotificationsPage from "./routes/NotificationsPage";
-import History from "./routes/History";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AdminRoute from "./components/AdminRoute";
 import LandingPage from "./routes/LandingPage";
@@ -41,14 +38,6 @@ export default function App() {
             }
           />
           <Route
-            path="/events"
-            element={
-              <ProtectedRoute>
-                <UserEvents />
-              </ProtectedRoute>
-            }
-          />
-          <Route
             path="/admin/events"
             element={
               <AdminRoute>
@@ -62,22 +51,6 @@ export default function App() {
               <AdminRoute>
                 <VolunteerMatching />
               </AdminRoute>
-            }
-          />
-          <Route
-            path="/notifications"
-            element={
-              <ProtectedRoute>
-                <NotificationsPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/history"
-            element={
-              <ProtectedRoute>
-                <History />
-              </ProtectedRoute>
             }
           />
         </Routes>

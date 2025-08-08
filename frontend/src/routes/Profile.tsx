@@ -11,8 +11,6 @@ import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import { StylesConfig } from "react-select";
-import { CSSProperties } from "react";
-import ListGroup from "react-bootstrap/ListGroup";
 
 type ProfileContext = {
   fullName: string;
@@ -39,7 +37,7 @@ const selectStyle: StylesConfig<skillType, IsMulti> = {
     return {
       ...provided,
       backgroundColor: "#212529",
-      borderColor: "#0d6efd",
+      borderColor: !state.isFocused ? "#495057" : "#0d6efd",
     };
   },
   multiValue: (provided, state) => {
@@ -162,7 +160,10 @@ export default function Profile() {
             <Form.Control
               type="text"
               placeholder="Enter your name"
-              {...register("fullName", { required: true, maxLength: 50 })}
+              {...register("fullName", {
+                required: { value: true, message: "This field is required" },
+                maxLength: { value: 50, message: "Maximum of 50 characters" },
+              })}
             ></Form.Control>
             {errors.fullName && (
               <Form.Text className="text-danger">
@@ -176,7 +177,10 @@ export default function Profile() {
             <Form.Control
               type="text"
               placeholder="Address line 1"
-              {...register("addr1", { required: true, maxLength: 100 })}
+              {...register("addr1", {
+                required: { value: true, message: "This field is required" },
+                maxLength: { value: 100, message: "Maximum of 100 characters" },
+              })}
             ></Form.Control>
             {errors.addr1 && (
               <Form.Text className="text-danger">
@@ -190,7 +194,9 @@ export default function Profile() {
             <Form.Control
               type="text"
               placeholder="Address line 2"
-              {...register("addr2", { maxLength: 100 })}
+              {...register("addr2", {
+                maxLength: { value: 100, message: "Maximum of 100 characters" },
+              })}
             ></Form.Control>
             {errors.addr2 && (
               <Form.Text className="text-danger">
@@ -204,7 +210,10 @@ export default function Profile() {
             <Form.Control
               type="text"
               placeholder="City"
-              {...register("city", { required: true, maxLength: 100 })}
+              {...register("city", {
+                required: { value: true, message: "This field is required" },
+                maxLength: { value: 100, message: "Maximum of 100 characters" },
+              })}
             ></Form.Control>
             {errors.city && (
               <Form.Text className="text-danger">
@@ -215,7 +224,10 @@ export default function Profile() {
           <Form.Group id="state">
             <Form.Label>State</Form.Label>
             <Form.Select
-              {...register("state", { required: true, maxLength: 2 })}
+              {...register("state", {
+                required: { value: true, message: "This field is required" },
+                maxLength: 2,
+              })}
             >
               <option value="AL">Alabama</option>
               <option value="AK">Alaska</option>
@@ -276,9 +288,9 @@ export default function Profile() {
               type="text"
               placeholder="Enter your zip code"
               {...register("zip", {
-                required: true,
-                minLength: 5,
-                maxLength: 9,
+                required: { value: true, message: "This field is required" },
+                minLength: { value: 5, message: "Minimum of 5 characters" },
+                maxLength: { value: 9, message: "Maximum of 9 characters" },
               })}
             ></Form.Control>
             {errors.zip && (
@@ -292,7 +304,9 @@ export default function Profile() {
             <Controller
               control={control}
               name="skills"
-              rules={{ required: true }}
+              rules={{
+                required: { value: true, message: "This field is required" },
+              }}
               render={({ field }) => (
                 <Select
                   {...field}
@@ -309,7 +323,9 @@ export default function Profile() {
             <Form.Control
               as="textarea"
               rows={3}
-              {...register("preferences", { maxLength: 250 })}
+              {...register("preferences", {
+                maxLength: { value: 250, message: "Maximum of 250 characters" },
+              })}
             ></Form.Control>
           </Form.Group>
           <Form.Group id="availability" className="my-3">

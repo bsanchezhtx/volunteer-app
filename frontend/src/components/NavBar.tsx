@@ -15,17 +15,13 @@ export default function NavBar() {
         <Nav className="me-auto ms-5">
           <Nav.Link href="/dashboard">Dashboard</Nav.Link>
           <Nav.Link href="/profile">Profile</Nav.Link>
-          <Nav.Link href="/history">History</Nav.Link>
-          <Nav.Link href="/notifications">Notifications</Nav.Link>
           {user?.role === "admin" ? (
             <>
               <Nav.Link href="/admin/events">Event Management</Nav.Link>
               <Nav.Link href="/admin/matching">Volunteer Matching</Nav.Link>
             </>
           ) : (
-            <>
-              <Nav.Link href="/events">Events</Nav.Link>
-            </>
+            <></>
           )}
         </Nav>
         <Button className="mx-2" variant="outline-light" onClick={logout}>

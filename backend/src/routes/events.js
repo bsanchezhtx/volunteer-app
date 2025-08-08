@@ -12,48 +12,55 @@ const rules = [
   body("location").notEmpty(),
   body("requiredSkills").isArray({ min: 1 }),
   body("urgency").isInt(),
-  body("date").notEmpty()
+  body("date").notEmpty(),
 ];
 
 r.post("/", protect, rules, validate, async (req, res) => {
+  try {
+    console.log(req.body);
+    const evt = await prisma.event.create({
+      data: {
+        name: req.body.name,
+        description: req.body.description,
+        location: req.body.location,
+        requiredSkills: JSON.stringify(req.body.requiredSkills),
+        urgency: req.body.urgency,
+        date: req.body.date,
+      },
+    });
 
-  const evt = await prisma.event.create({
-    data: {
-      name: req.body.name,
-      description: req.body.description,
-      location: req.body.location,
-      requiredSkills: JSON.stringify(req.body.requiredSkills),
-      urgency: req.body.urgency,
-      date: req.body.date
-    }
-  });
-
-  res.json({
-    id: evt.id,
-    name: evt.name,
-    description: evt.description,
-    location: evt.location,
-    requiredSkills: JSON.parse(evt.requiredSkills),
-    urgency: evt.urgency,
-    date: evt.date
-  });
+    res.json({
+      id: evt.id,
+      name: evt.name,
+      description: evt.description,
+      location: evt.location,
+      requiredSkills: JSON.parse(evt.requiredSkills),
+      urgency: evt.urgency,
+      date: evt.date,
+    });
+  } catch {
+    res.status(409).json({ errors: { msg: "Unable to create event" } });
+  }
 });
 
 r.get("/", protect, async (_, res) => {
-  const all = await prisma.event.findMany();
+  try {
+    const all = await prisma.event.findMany();
 
-  const parsed = all.map((e) => ({
-    id: e.id,
-    name: e.name,
-    description: e.description,
-    location: e.location,
-    requiredSkills: JSON.parse(e.requiredSkills),
-    urgency: e.urgency,
-    date: e.date
-  }));
+    const parsed = all.map((e) => ({
+      id: e.id,
+      name: e.name,
+      description: e.description,
+      location: e.location,
+      requiredSkills: JSON.parse(e.requiredSkills),
+      urgency: e.urgency,
+      date: e.date,
+    }));
 
-  res.json(parsed);
+    res.json(parsed);
+  } catch {
+    res.status(409).json({ errors: { msg: "Unable to retrieve events" } });
+  }
 });
 
 export default r;
-
