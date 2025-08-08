@@ -1,7 +1,6 @@
 import NavBar from "../components/NavBar";
-import { useNotifications } from "../context/NotificationsContext";
-import { useAuthContext } from "../context/AuthProvider";
 import api from "../api";
+import { useAuthContext } from "../context/AuthProvider";
 import { useEffect, useState } from "react";
 
 type notifType = {
@@ -13,36 +12,36 @@ type notifType = {
 type historyType = {
   status: string;
   eventName: string;
+  date: Date;
 };
 
 export default function Dashboard() {
-  const { notifications } = useNotifications();
   const { user } = useAuthContext();
   const id = user?.id;
   const [notifs, setNotifs] = useState<notifType[] | null>(null);
   const [upcoming, setUpcoming] = useState<historyType[] | null>(null);
 
-  useEffect(() => {
-    try {
-      api({
-        method: "post",
-        url: "/notifications",
-        data: { id },
-      }).then((response) => {
-        setNotifs(response.data);
-      });
+  // useEffect(() => {
+  //   try {
+  //     api({
+  //       method: "post",
+  //       url: "/notifications",
+  //       data: { id },
+  //     }).then((response) => {
+  //       setNotifs(response.data);
+  //     });
 
-      api({
-        method: "post",
-        url: "/history/upcoming",
-        data: { id },
-      }).then((response) => {
-        setUpcoming(response.data);
-      });
-    } catch (error) {
-      console.error(error);
-    }
-  });
+  //     api({
+  //       method: "post",
+  //       url: "/history/upcoming",
+  //       data: { id },
+  //     }).then((response) => {
+  //       setUpcoming(response.data);
+  //     });
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // });
 
   return (
     <>

@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import NavBar from "../components/NavBar";
-import { bestEventFor } from "../utils/match";
-import { useNotifications } from "../context/NotificationsContext";
+// import { bestEventFor } from "../utils/match";
 import api from "../api";
 
 type volunteer = {
@@ -25,10 +24,6 @@ export default function VolunteerMatching() {
   const [suggestion, setSuggestion] = useState<suggestedEvent | null>(null);
   const [v, setV] = useState<volunteer | null>(null);
   const [vid, setVid] = useState("");
-
-  const { push } = useNotifications();
-
-  // const suggestion = v ? bestEventFor(v, events) : undefined;
 
   useEffect(() => {
     api.get("/match/volunteers").then(({ data }) => setVolunteers(data));

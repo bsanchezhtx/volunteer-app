@@ -8,8 +8,8 @@ export default function NavBar() {
 
   return (
     <>
-      <Navbar bg="dark" data-bs-theme="dark">
-        <Navbar.Brand className="ms-2" href="/dashboard">
+      <Navbar bg="primary" data-bs-theme="dark">
+        <Navbar.Brand className="mx-2" href="/dashboard">
           Volunteer App
         </Navbar.Brand>
         <Nav className="me-auto ms-5">
@@ -28,7 +28,7 @@ export default function NavBar() {
             </>
           )}
         </Nav>
-        <Button className="ms-auto" variant="outline-light" onClick={logout}>
+        <Button className="mx-2" variant="outline-light" onClick={logout}>
           Logout
         </Button>
       </Navbar>

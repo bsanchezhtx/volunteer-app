@@ -21,6 +21,7 @@ r.post("/register", credRules, validate, async (req, res) => {
     });
     res.status(200).json({
       token: sign(user),
+      email: user.email,
       role: user.role,
       id: user.id,
     });
@@ -40,6 +41,7 @@ r.post("/login", credRules, validate, async (req, res) => {
       .json({ errors: { msg: "Invalid email and password." } });
   res.json({
     role: user.role,
+    email: user.email,
     token: sign(user),
     id: user.id,
   });

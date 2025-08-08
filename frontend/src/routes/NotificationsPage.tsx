@@ -1,5 +1,4 @@
 import NavBar from "../components/NavBar";
-import { useNotifications } from "../context/NotificationsContext";
 import { useAuthContext } from "../context/AuthProvider";
 import api from "../api";
 import { useEffect, useState } from "react";
@@ -13,7 +12,6 @@ type notifType = {
 export default function NotificationsPage() {
   const { user } = useAuthContext();
   const id = user?.id;
-  const { notifications, markRead } = useNotifications();
   const [notifs, setNotifs] = useState<notifType[] | null>(null);
 
   useEffect(() => {
@@ -33,7 +31,7 @@ export default function NotificationsPage() {
   return (
     <>
       <NavBar />
-      <h2 style={{ textAlign: "center" }}>Notifications</h2>
+      {/* <h2 style={{ textAlign: "center" }}>Notifications</h2>
       {notifications.length === 0 ? (
         <p style={{ textAlign: "center" }}>No notifications.</p>
       ) : (
@@ -44,7 +42,7 @@ export default function NotificationsPage() {
             </li>
           ))}
         </ul>
-      )}
+      )} */}
     </>
   );
 }

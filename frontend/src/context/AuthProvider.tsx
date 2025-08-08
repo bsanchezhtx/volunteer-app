@@ -49,13 +49,16 @@ export const AuthProvider = ({ children }: AuthProps) => {
         if (response) {
           const user = {
             id: response?.data.id,
+            email: response.data.email,
             role: response?.data.role,
           };
           localStorage.setItem("user", JSON.stringify(user));
           localStorage.setItem("token", response?.data.token);
           setToken(response?.data.token);
           setUser(user);
-          toast.success("Registration Successful.");
+          toast.success(
+            "Registration Successful. Please complete your profile!"
+          );
           navigate("/profile");
         }
       })
@@ -75,18 +78,18 @@ export const AuthProvider = ({ children }: AuthProps) => {
       data: { email, password },
     })
       .then((response) => {
-        if (response) {
-          const user = {
-            id: response?.data.id,
-            role: response?.data.role,
-          };
-          localStorage.setItem("user", JSON.stringify(user));
-          localStorage.setItem("token", response?.data.token);
-          setToken(response?.data.token!);
-          setUser(user);
-          toast.success("Login Successful.");
-          navigate("/dashboard");
-        }
+        const user = {
+          id: response?.data.id,
+          role: response?.data.role,
+          email: response.data.email,
+        };
+        localStorage.setItem("user", JSON.stringify(user));
+        localStorage.setItem("token", response?.data.token);
+        setToken(response?.data.token!);
+        setUser(user);
+        console.log(user);
+        toast.success("Login Successful.");
+        navigate("/dashboard");
       })
       .catch((error) => {
         if (error.status == 401) {
@@ -102,7 +105,7 @@ export const AuthProvider = ({ children }: AuthProps) => {
     localStorage.removeItem("token");
     setUser(null);
     setToken("");
-    navigate("/w");
+    navigate("/");
   };
 
   const isLoggedIn = () => {

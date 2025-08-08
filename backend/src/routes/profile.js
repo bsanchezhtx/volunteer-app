@@ -17,60 +17,69 @@ const rules = [
   body("availability").isArray({ min: 1 }),
 ];
 
+// update a profile
 r.put("/", protect, rules, validate, async (req, res) => {
-  const data = {
-    fullName: req.body.fullName,
-    addr1: req.body.addr1,
-    addr2: req.body.addr2 || null,
-    city: req.body.city,
-    state: req.body.state,
-    zip: req.body.zip,
-    skills: JSON.stringify(req.body.skills),
-    preferences: req.body.preferences || null,
-    availability: JSON.stringify(req.body.availability),
-    userId: req.body.userId,
-  };
+  try {
+    const data = {
+      fullName: req.body.fullName,
+      addr1: req.body.addr1,
+      addr2: req.body.addr2 || null,
+      city: req.body.city,
+      state: req.body.state,
+      zip: req.body.zip,
+      skills: JSON.stringify(req.body.skills),
+      preferences: req.body.preferences || null,
+      availability: JSON.stringify(req.body.availability),
+      userId: req.body.userId,
+    };
 
-  const newProfile = await prisma.profile.upsert({
-    where: { userId: req.body.userId },
-    create: data,
-    update: data,
-  });
+    const newProfile = await prisma.profile.upsert({
+      where: { userId: req.body.userId },
+      create: data,
+      update: data,
+    });
 
-  await prisma.user.update({
-    where: {
-      id: data.userId,
-    },
-    data: {
-      profile: { connect: { id: newProfile.id } },
-    },
-  });
-
-  res.json({ msg: "Profile saved" });
-});
-
-r.post("/", protect, async (req, res) => {
-  const { id } = req.body;
-  const prof = await prisma.profile.findUnique({
-    where: { userId: id },
-  });
-
-  if (!prof) {
-    return res.json({});
+    await prisma.user.update({
+      where: {
+        id: data.userId,
+      },
+      data: {
+        profile: { connect: { id: newProfile.id } },
+      },
+    });
+  } catch {
+    res.status(400);
   }
 
-  res.json({
-    fullName: prof.fullName,
-    addr1: prof.addr1,
-    addr2: prof.addr2,
-    city: prof.city,
-    state: prof.state,
-    zip: prof.zip,
-    skills: JSON.parse(prof.skills),
-    preferences: prof.preferences,
-    availability: JSON.parse(prof.availability),
-    userId: prof.userId,
-  });
+  res.status(200).json({ msg: "Profile saved" });
+});
+
+// retrieve a profile based on user id
+r.post("/", protect, async (req, res) => {
+  try {
+    const { id } = req.body;
+    const prof = await prisma.profile.findUnique({
+      where: { userId: id },
+    });
+
+    if (!prof) {
+      return res.status(201).json({});
+    }
+
+    res.status(200).json({
+      fullName: prof.fullName,
+      addr1: prof.addr1,
+      addr2: prof.addr2,
+      city: prof.city,
+      state: prof.state,
+      zip: prof.zip,
+      skills: JSON.parse(prof.skills),
+      preferences: prof.preferences,
+      availability: JSON.parse(prof.availability),
+    });
+  } catch {
+    res.status(400);
+  }
 });
 
 export default r;
