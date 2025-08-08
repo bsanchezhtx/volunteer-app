@@ -19,13 +19,15 @@ r.post("/register", credRules, validate, async (req, res) => {
     const user = await prisma.user.create({
       data: { email: email, password: hash, role },
     });
-    res.json({
+    res.status(200).json({
       token: sign(user),
       role: user.role,
       id: user.id,
     });
   } catch {
-    res.status(409).json({ msg: "Email already in use" });
+    res
+      .status(409)
+      .json({ errors: { msg: "Unable to register, email already in use." } });
   }
 });
 
@@ -33,7 +35,9 @@ r.post("/login", credRules, validate, async (req, res) => {
   const { email, password } = req.body;
   const user = await prisma.user.findUnique({ where: { email } });
   if (!user || !(await bcrypt.compare(password, user.password)))
-    return res.status(401).json({ msg: "Bad credentials" });
+    return res
+      .status(401)
+      .json({ errors: { msg: "Invalid email and password." } });
   res.json({
     role: user.role,
     token: sign(user),

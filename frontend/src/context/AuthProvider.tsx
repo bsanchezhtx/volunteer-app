@@ -1,10 +1,10 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 
 import { User } from "../types";
 import { useNavigate } from "react-router-dom";
 import api from "../api";
-import axios from "axios";
 import React from "react";
+import { toast } from "react-toastify";
 
 type UserContextType = {
   user: User | null;
@@ -23,6 +23,7 @@ export const AuthProvider = ({ children }: AuthProps) => {
   const navigate = useNavigate();
   const [token, setToken] = useState<string | null>(null);
   const [user, setUser] = useState<User | null>(null);
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
     const user = localStorage.getItem("user");
@@ -30,8 +31,8 @@ export const AuthProvider = ({ children }: AuthProps) => {
     if (user && token) {
       setUser(JSON.parse(user));
       setToken(token);
-      navigate("/dashboard");
     }
+    setReady(true);
   }, []);
 
   const registerUser = async (
@@ -54,12 +55,15 @@ export const AuthProvider = ({ children }: AuthProps) => {
           localStorage.setItem("token", response?.data.token);
           setToken(response?.data.token);
           setUser(user);
+          toast.success("Registration Successful.");
           navigate("/profile");
         }
       })
       .catch((error) => {
-        if (error.response) {
-          console.log(error.response.data);
+        if (error.status == 409) {
+          toast.warning("This email is already in use.");
+        } else {
+          toast.warning(`A server error occured during registration.`);
         }
       });
   };
@@ -80,12 +84,15 @@ export const AuthProvider = ({ children }: AuthProps) => {
           localStorage.setItem("token", response?.data.token);
           setToken(response?.data.token!);
           setUser(user);
+          toast.success("Login Successful.");
           navigate("/dashboard");
         }
       })
       .catch((error) => {
-        if (error.response) {
-          console.log(error.response.data);
+        if (error.status == 401) {
+          toast.warning("Invalid email and password.");
+        } else {
+          toast.warning(`A server error occured during login.`);
         }
       });
   };
@@ -95,7 +102,7 @@ export const AuthProvider = ({ children }: AuthProps) => {
     localStorage.removeItem("token");
     setUser(null);
     setToken("");
-    navigate("/");
+    navigate("/w");
   };
 
   const isLoggedIn = () => {
@@ -108,7 +115,7 @@ export const AuthProvider = ({ children }: AuthProps) => {
     <AuthContext.Provider
       value={{ user, token, loginUser, registerUser, isLoggedIn, logout }}
     >
-      {children}
+      {ready ? children : null}
     </AuthContext.Provider>
   );
 };

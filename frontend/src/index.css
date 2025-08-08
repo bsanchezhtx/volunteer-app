@@ -1,6 +1,6 @@
 @import "react-datepicker/dist/react-datepicker.css";
 
-*{box-sizing:border-box}
+/* *{box-sizing:border-box}
 body{margin:0;font-family:system-ui,sans-serif;background:#fafafa;color:#222}
 input,textarea,select,button{display:block;width:100%;margin:.5rem 0;padding:.45rem .6rem;font-size:1rem}
 input,textarea,select{border:1px solid #ccc;border-radius:4px}
@@ -10,5 +10,4 @@ label{margin-top:.5rem;font-weight:600}
 small{color:#d33}
 table{width:100%;border-collapse:collapse;margin-top:.75rem}
 th,td{border:1px solid #ccc;padding:.4rem .6rem;text-align:left}
-th{background:#f0f0f0;font-weight:600}
-
+th{background:#f0f0f0;font-weight:600} */

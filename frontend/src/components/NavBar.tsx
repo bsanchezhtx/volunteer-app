@@ -1,41 +1,37 @@
-import { NavLink } from "react-router-dom";
 import { useAuthContext } from "../context/AuthProvider";
+import Nav from "react-bootstrap/Nav";
+import Navbar from "react-bootstrap/Navbar";
+import Button from "react-bootstrap/Button";
+
 export default function NavBar() {
   const { logout, user } = useAuthContext();
 
   return (
-    <nav style={{ background: "#f6f6f6", padding: ".5rem 1rem" }}>
-      <ul
-        style={{ listStyle: "none", display: "flex", gap: "1rem", margin: 0 }}
-      >
-        <li>
-          <NavLink to="/dashboard">Dashboard</NavLink>
-        </li>
-        <li>
-          <NavLink to="/profile">Profile</NavLink>
-        </li>
-        <li>
-          <NavLink to="/history">History</NavLink>
-        </li>
-        <li>
-          <NavLink to="/notifications">Notifications</NavLink>
-        </li>
-        {user?.role === "admin" ? (
-          <>
-            <li>
-              <NavLink to="/admin/events">Events</NavLink>
-            </li>
-            <li>
-              <NavLink to="/admin/matching">Matching</NavLink>
-            </li>
-          </>
-        ) : (
-          <></>
-        )}
-        <li>
-          <a onClick={logout}>Logout</a>
-        </li>
-      </ul>
-    </nav>
+    <>
+      <Navbar bg="dark" data-bs-theme="dark">
+        <Navbar.Brand className="ms-2" href="/dashboard">
+          Volunteer App
+        </Navbar.Brand>
+        <Nav className="me-auto ms-5">
+          <Nav.Link href="/dashboard">Dashboard</Nav.Link>
+          <Nav.Link href="/profile">Profile</Nav.Link>
+          <Nav.Link href="/history">History</Nav.Link>
+          <Nav.Link href="/notifications">Notifications</Nav.Link>
+          {user?.role === "admin" ? (
+            <>
+              <Nav.Link href="/admin/events">Event Management</Nav.Link>
+              <Nav.Link href="/admin/matching">Volunteer Matching</Nav.Link>
+            </>
+          ) : (
+            <>
+              <Nav.Link href="/events">Events</Nav.Link>
+            </>
+          )}
+        </Nav>
+        <Button className="ms-auto" variant="outline-light" onClick={logout}>
+          Logout
+        </Button>
+      </Navbar>
+    </>
   );
 }
