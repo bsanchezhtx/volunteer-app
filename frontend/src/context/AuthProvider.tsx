@@ -52,9 +52,9 @@ export const AuthProvider = ({ children }: AuthProps) => {
           };
           localStorage.setItem("user", JSON.stringify(user));
           localStorage.setItem("token", response?.data.token);
-          setToken(response?.data.token!);
+          setToken(response?.data.token);
           setUser(user);
-          navigate("/dashboard");
+          navigate("/profile");
         }
       })
       .catch((error) => {
