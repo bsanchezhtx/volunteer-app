@@ -18,7 +18,20 @@ r.post("/upcoming", protect, async (req, res) => {
     select: {
       status: true,
       event: {
-        select: { name: true },
+        select: { name: true, description: true, date: true },
+      },
+    },
+  });
+  res.json(hist);
+});
+
+r.post("/completed", protect, async (req, res) => {
+  const hist = await prisma.history.findMany({
+    where: { AND: [({ userId: req.body.id }, { status: "Completed" })] },
+    select: {
+      status: true,
+      event: {
+        select: { name: true, description: true, date: true },
       },
     },
   });

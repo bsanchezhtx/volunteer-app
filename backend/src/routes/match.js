@@ -82,6 +82,7 @@ r.post(
       data: {
         userId: vid,
         text: `Assigned to ${evt.name}`,
+        read: false,
       },
     });
     res.status(200).json({ msg: "Assigned & notified" });
